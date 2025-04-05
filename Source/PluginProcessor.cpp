@@ -90,6 +90,14 @@ void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
 {
     synth.setCurrentPlaybackSampleRate(sampleRate);
     juce::ignoreUnused (sampleRate, samplesPerBlock);
+
+    for (int i = 0; i < synth.getNumVoices(); i++)
+    {
+        if (auto voice = dynamic_cast<MicroworldsVoice*>(synth.getVoice(i)))
+        {
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+        }
+    }
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -138,12 +146,13 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i)))
         {
+            /*osc*/
             /*adsr*/
+            /*etc*/
         }
     }
 
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
 
 }
 
