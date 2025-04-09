@@ -10,7 +10,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), vts(*this, nullptr, "Parameters", createParameters())
 {
     synth.addSound(new MicroworldsSynth());
     synth.addVoice(new MicroworldsVoice());
@@ -188,4 +188,19 @@ void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeI
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new AudioPluginAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameters()
+{
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> parameters;
+
+    //parameters.push_back(std::make_unique <juce::AudioParameterFloat>("GAIN", "Gain", 0.0f, 1.0f, 0.5f));
+    parameters.push_back(std::make_unique <juce::AudioParameterChoice>("OSC1", "Oscillator 1", juce::StringArray {"Sine", "Saw", "Square"}, 0));
+
+    parameters.push_back(std::make_unique <juce::AudioParameterFloat>("ATTACK", "Attack", 0.0f,2.0f, 0.1f));
+    parameters.push_back(std::make_unique <juce::AudioParameterFloat>("DECAY", "Decay", 0.0f, 1.0f, 0.1f));
+    parameters.push_back(std::make_unique <juce::AudioParameterFloat>("SUSTAIN", "Sustain", 0.0f, 1.0f, 1.0f));
+    parameters.push_back(std::make_unique <juce::AudioParameterFloat>("RELEASE", "Release", 0.0f, 3.0f, 0.5f));
+
+    return { parameters.begin(), parameters.end() };
 }
