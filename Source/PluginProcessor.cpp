@@ -152,6 +152,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         }
     }
 
+
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
 }
