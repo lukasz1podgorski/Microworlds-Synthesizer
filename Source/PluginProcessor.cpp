@@ -1,6 +1,8 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+const int NUM_VOICES = 6;
+
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
      : AudioProcessor (BusesProperties()
@@ -12,8 +14,11 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                      #endif
                        ), vts(*this, nullptr, "Parameters", createParameters())
 {
+
     synth.addSound(new MicroworldsSynth());
-    synth.addVoice(new MicroworldsVoice());
+
+    for (int i = 0; i < NUM_VOICES; ++i)
+        synth.addVoice(new MicroworldsVoice());
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
