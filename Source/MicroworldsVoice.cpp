@@ -44,16 +44,19 @@ void MicroworldsVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int
 	osc.prepare(spec);
 	gain.prepare(spec);
 
-	gain.setGainLinear(0.01f);
-
-	adsrParameters.attack = 0.5f;
-	adsrParameters.decay = 0.1f;
-	adsrParameters.sustain = 0.8f;
-	adsrParameters.release = 0.5f;
-
-	adsr.setParameters(adsrParameters);
+	gain.setGainLinear(0.2f);
 	
 	isPrepared = true;
+}
+
+void MicroworldsVoice::updateADSR(const float attack, const float decay, const float sustain, const float release)
+{
+	adsrParameters.attack = attack;
+	adsrParameters.decay = decay;
+	adsrParameters.sustain = sustain;
+	adsrParameters.release = release;
+
+	adsr.setParameters(adsrParameters);
 }
 
 void MicroworldsVoice::renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)

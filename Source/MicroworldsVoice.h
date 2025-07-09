@@ -14,6 +14,7 @@ public:
 	void pitchWheelMoved(int newPitchWheelValue) override;
 	void prepareToPlay(double sampleRate, int samplesPerBlock, int outputChannels);
 	void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
+	void updateADSR(const float attack, const float decay, const float sustain, const float release);
 
 private:
 	juce::ADSR adsr;
@@ -24,7 +25,7 @@ private:
 	juce::dsp::Gain<float> gain;
 	bool isPrepared = false;
 
-	// saw: return x / MathConstants<float>::pi;
+	// saw: return x / juce::MathConstants<float>::pi;
 	// square: x < 0.0f ? -1.0f : 1.0f;
 
 };

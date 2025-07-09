@@ -149,10 +149,19 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
-        if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i)))
+        if (auto voice = dynamic_cast<MicroworldsVoice*>(synth.getVoice(i)))
         {
             /*osc*/
-            /*adsr*/
+            
+            auto& attack = *vts.getRawParameterValue("ATTACK");
+            auto& decay = *vts.getRawParameterValue("DECAY");
+            auto& sustain = *vts.getRawParameterValue("SUSTAIN");
+            auto& release = *vts.getRawParameterValue("RELEASE");
+
+
+            //using load to retrieve the atomic object value to prevent data races and ensuring
+            // to retrieve the recent modifications
+            voice->updateADSR(attack.load(), decay.load(), sustain.load(), release.load());
             /*etc*/
         }
     }
